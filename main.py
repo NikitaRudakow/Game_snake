@@ -14,28 +14,52 @@ pygame.display.set_caption("Змейка")
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+GREY = (190, 190, 190, 255)
 
+class Wall:
+    def __init__(self):
+        self.position = (0, 0)
+        self.color = GREY
+        self.randomize_position()
+
+    def randomize_position(self):
+        self.position = (random.randint(0, (WIDTH // GRIDSIZE) - 1) * GRIDSIZE,
+                         random.randint(0, (HEIGHT // GRIDSIZE) - 1) * GRIDSIZE)
+
+    def render(self, surface):
+        pygame.draw.rect(surface, self.color, pygame.Rect(self.position[0], self.position[1], GRIDSIZE, GRIDSIZE))
 # Класс для представления змеи
 class Snake:
-    def __init__(self):
+    def __init__(self, color):
         self.length = 1
         self.positions = [((WIDTH // 2), (HEIGHT // 2))]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
-        self.color = GREEN
+        self.color = color
 
     def get_head_position(self):
         return self.positions[0]
 
-    def update(self):
+    def update(self, snake2=None):
         cur = self.get_head_position()
         x, y = self.direction
         new = (((cur[0] + (x*GRIDSIZE)) % WIDTH), (cur[1] + (y*GRIDSIZE)) % HEIGHT)
-        if len(self.positions) > 2 and new in self.positions[2:]:
-            self.reset()
+        if snake2 is not None:
+            if len(self.positions) > 2 and new in self.positions[2:] or new in snake2.positions[2:]:
+                self.reset()
+            elif new == snake2.positions[0]:
+                self.reset()
+                snake2.reset()
+            else:
+                self.positions.insert(0, new)
+                if len(self.positions) > self.length:
+                    self.positions.pop()
         else:
-            self.positions.insert(0, new)
-            if len(self.positions) > self.length:
-                self.positions.pop()
+            if len(self.positions) > 2 and new in self.positions[2:]:
+                self.reset()
+            else:
+                self.positions.insert(0, new)
+                if len(self.positions) > self.length:
+                    self.positions.pop()
 
     def reset(self):
         self.length = 1
@@ -77,43 +101,77 @@ def drawGrid(surface):
             pygame.draw.rect(surface, BLACK, rect, 1)
 
 # Функция обработки событий
-def handle_events(snake):
+def handle_events(snake_1, snake_2=None):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                if snake.direction != DOWN:
-                    snake.direction = UP
-            elif event.key == pygame.K_DOWN:
-                if snake.direction != UP:
-                    snake.direction = DOWN
-            elif event.key == pygame.K_LEFT:
-                if snake.direction != RIGHT:
-                    snake.direction = LEFT
-            elif event.key == pygame.K_RIGHT:
-                if snake.direction != LEFT:
-                    snake.direction = RIGHT
+                if snake_1.direction != DOWN:
+                    snake_1.direction = UP
+            if event.key == pygame.K_DOWN:
+                if snake_1.direction != UP:
+                    snake_1.direction = DOWN
+            if event.key == pygame.K_LEFT:
+                if snake_1.direction != RIGHT:
+                    snake_1.direction = LEFT
+            if event.key == pygame.K_RIGHT:
+                if snake_1.direction != LEFT:
+                    snake_1.direction = RIGHT
+            if snake_2 is not None:
+                if event.key == pygame.K_w:
+                    if snake_2.direction != DOWN:
+                        snake_2.direction = UP
+                if event.key == pygame.K_s:
+                    if snake_2.direction != UP:
+                        snake_2.direction = DOWN
+                if event.key == pygame.K_a:
+                    if snake_2.direction != RIGHT:
+                        snake_2.direction = LEFT
+                if event.key == pygame.K_d:
+                    if snake_2.direction != LEFT:
+                        snake_2.direction = RIGHT
 
 # Инициализация змеи и еды
-snake = Snake()
+snake_1 = Snake(GREEN)
+snake_2 = Snake(GREY)
 food = Food()
+wall = Wall()
+wall1 = Wall()
+wall2 = Wall()
+wall3 = Wall()
 
 # Основной цикл игры
 while True:
-    handle_events(snake)
-    snake.update()
+    handle_events(snake_1, snake_2)
+    snake_1.update(snake_2)
+    snake_2.update(snake_1)
 
     # Проверка на столкновение с едой
-    if snake.get_head_position() == food.position:
-        snake.length += 1
+    if snake_1.get_head_position() == food.position:
+        snake_1.length += 1
         food.randomize_position()
+        wall.randomize_position()
+
+    if snake_2.get_head_position() == food.position:
+        snake_2.length += 1
+        food.randomize_position()
+        wall.randomize_position()
+    # if snake_2.get_head_position() == snake_1.get_head_position():
+    #     snake_1.reset()
+
+    if snake_1.get_head_position() == wall.position:
+        snake_1.reset()
+    if snake_2.get_head_position() == wall.position:
+        snake_2.reset()
 
     SCREEN.fill(BLACK)
     drawGrid(SCREEN)
-    snake.render(SCREEN)
+    snake_1.render(SCREEN)
+    snake_2.render(SCREEN)
     food.render(SCREEN)
+    wall.render(SCREEN)
 
     pygame.display.update()
     pygame.time.Clock().tick(15)  # Устанавливаем скорость змейки
