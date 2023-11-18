@@ -7,6 +7,9 @@ pygame.init()
 
 # Параметры экран
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
+background = pygame.image.load('background.jpg')
+
+SCREEN.blit(background, (0,0))
 pygame.display.set_caption("Змейка")
 
 # Цвета
@@ -96,7 +99,7 @@ def drawGrid(surface):
     for y in range(0, HEIGHT, GRIDSIZE):
         for x in range(0, WIDTH, GRIDSIZE):
             rect = pygame.Rect(x, y, GRIDSIZE, GRIDSIZE)
-            pygame.draw.rect(surface, colors["BLACK"], rect, 1)
+            #pygame.draw.rect(surface, colors["BLACK"], rect, 1)
 
 # Функция обработки событий
 def handle_events(snake_1, snake_2=None):
@@ -181,7 +184,8 @@ def f_level():
             snake.length += 1
             food.randomize_position()
 
-        SCREEN.fill(colors["BLACK"])
+        #SCREEN.fill(colors["BLACK"])
+        SCREEN.blit(background, (0,0))
         drawGrid(SCREEN)
         snake.render(SCREEN)
         food.render(SCREEN)
