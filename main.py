@@ -6,6 +6,9 @@ from config import colors, WIDTH, HEIGHT, GRIDSIZE
 pygame.init()
 
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
+background = pygame.image.load('background.jpg')
+
+SCREEN.blit(background, (0,0))
 pygame.display.set_caption("Змейка")
 
 
@@ -94,7 +97,7 @@ def drawGrid(surface):
     for y in range(0, HEIGHT, GRIDSIZE):
         for x in range(0, WIDTH, GRIDSIZE):
             rect = pygame.Rect(x, y, GRIDSIZE, GRIDSIZE)
-            pygame.draw.rect(surface, colors["BLACK"], rect, 1)
+            #pygame.draw.rect(surface, colors["BLACK"], rect, 1)
 
 # Функция обработки событий
 def handle_events(snake_1, snake_2=None):
@@ -106,26 +109,26 @@ def handle_events(snake_1, snake_2=None):
             if event.key == pygame.K_UP:
                 if snake_1.direction != DOWN:
                     snake_1.direction = UP
-            if event.key == pygame.K_DOWN:
+            elif event.key == pygame.K_DOWN:
                 if snake_1.direction != UP:
                     snake_1.direction = DOWN
-            if event.key == pygame.K_LEFT:
+            elif event.key == pygame.K_LEFT:
                 if snake_1.direction != RIGHT:
                     snake_1.direction = LEFT
-            if event.key == pygame.K_RIGHT:
+            elif event.key == pygame.K_RIGHT:
                 if snake_1.direction != LEFT:
                     snake_1.direction = RIGHT
             if snake_2 is not None:
                 if event.key == pygame.K_w:
                     if snake_2.direction != DOWN:
                         snake_2.direction = UP
-                if event.key == pygame.K_s:
+                elif event.key == pygame.K_s:
                     if snake_2.direction != UP:
                         snake_2.direction = DOWN
-                if event.key == pygame.K_a:
+                elif event.key == pygame.K_a:
                     if snake_2.direction != RIGHT:
                         snake_2.direction = LEFT
-                if event.key == pygame.K_d:
+                elif event.key == pygame.K_d:
                     if snake_2.direction != LEFT:
                         snake_2.direction = RIGHT
 
@@ -179,7 +182,8 @@ def f_level():
             snake.length += 1
             food.randomize_position()
 
-        SCREEN.fill(colors["BLACK"])
+        #SCREEN.fill(colors["BLACK"])
+        SCREEN.blit(background, (0,0))
         drawGrid(SCREEN)
         snake.render(SCREEN)
         food.render(SCREEN)
