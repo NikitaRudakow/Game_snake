@@ -1,20 +1,13 @@
 import pygame
 import sys
-
+from config import colors, WIDTH, HEIGHT
+from main import f_level
 # Инициализация Pygame
 pygame.init()
 
-# Определение цветов
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-
-# Определение размеров экрана
-SCREEN_WIDTH = 500
-SCREEN_HEIGHT = 500
 
 # Создание экрана
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Пример меню с Pygame")
 
 # Определение шрифта
@@ -22,19 +15,19 @@ font = pygame.font.Font(None, 36)
 
 
 def draw_menu():
-    screen.fill(WHITE)
+    screen.fill(colors["WHITE"])
 
     # Рисование кнопок
-    pygame.draw.rect(screen, RED, (50, 50, 300, 50))
-    pygame.draw.rect(screen, RED, (50, 150, 300, 50))
-    pygame.draw.rect(screen, RED, (50, 250, 300, 50))
-    pygame.draw.rect(screen, RED, (50, 350, 300, 50))
+    pygame.draw.rect(screen, colors["RED"], (50, 50, 300, 50))
+    pygame.draw.rect(screen, colors["RED"], (50, 150, 300, 50))
+    pygame.draw.rect(screen, colors["RED"], (50, 250, 300, 50))
+    pygame.draw.rect(screen, colors["RED"], (50, 350, 300, 50))
 
     # Рисование текста на кнопках
-    text_play = font.render("Play", True, BLACK)
-    text_quit = font.render("Quit", True, BLACK)
-    text_option = font.render("Options", True, BLACK)
-    text_highscore = font.render("Highscore", True, BLACK)
+    text_play = font.render("Play", True, colors["BLACK"])
+    text_quit = font.render("Quit", True, colors["BLACK"])
+    text_option = font.render("Options", True, colors["BLACK"])
+    text_highscore = font.render("Highscore", True, colors["BLACK"])
 
     screen.blit(text_play, (170 - text_play.get_width() // 2, 65))
     screen.blit(text_quit, (170 - text_quit.get_width() // 2, 165))
@@ -53,7 +46,7 @@ while True:
             x, y = pygame.mouse.get_pos()
             if 50 < x < 350:
                 if 50 < y < 100:
-                    print("Play button pressed")
+                    f_level()
                 elif 150 < y < 200:
                     print("Quit button pressed")
                 elif 250 < y < 300:

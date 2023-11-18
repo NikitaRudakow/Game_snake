@@ -1,25 +1,21 @@
 import pygame
 import sys
 import random
-
+from config import colors, WIDTH, HEIGHT
 # Инициализация Pygame
 pygame.init()
 
-# Параметры экрана
-WIDTH, HEIGHT = 800, 600
+# Параметры экран
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Змейка")
 
 # Цвета
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-GREY = (190, 190, 190, 255)
+
 
 class Wall:
     def __init__(self):
         self.position = (0, 0)
-        self.color = GREY
+        self.color = colors["GREY"]
         self.randomize_position()
 
     def randomize_position(self):
@@ -76,7 +72,7 @@ class Snake:
 class Food:
     def __init__(self):
         self.position = (0, 0)
-        self.color = RED
+        self.color = colors["RED"]
         self.randomize_position()
 
     def randomize_position(self):
@@ -100,7 +96,7 @@ def drawGrid(surface):
     for y in range(0, HEIGHT, GRIDSIZE):
         for x in range(0, WIDTH, GRIDSIZE):
             rect = pygame.Rect(x, y, GRIDSIZE, GRIDSIZE)
-            pygame.draw.rect(surface, BLACK, rect, 1)
+            pygame.draw.rect(surface, colors["BLACK"], rect, 1)
 
 # Функция обработки событий
 def handle_events(snake_1, snake_2=None):
@@ -174,7 +170,7 @@ def handle_events(snake_1, snake_2=None):
 
 
 def f_level():
-    snake = Snake(GREEN)
+    snake = Snake(colors["GREEN"])
     food = Food()
     while True:
         handle_events(snake)
@@ -185,7 +181,7 @@ def f_level():
             snake.length += 1
             food.randomize_position()
 
-        SCREEN.fill(BLACK)
+        SCREEN.fill(colors["BLACK"])
         drawGrid(SCREEN)
         snake.render(SCREEN)
         food.render(SCREEN)
@@ -194,8 +190,9 @@ def f_level():
 
 
 def s_level():
-    snake = Snake(GREEN)
+    snake = Snake(colors["GREEN"])
     food = Food()
+    wall = Wall()
     while True:
         handle_events(snake)
         snake.update()
@@ -205,9 +202,19 @@ def s_level():
             snake.length += 1
             food.randomize_position()
 
-        SCREEN.fill(BLACK)
+        SCREEN.fill(colors["BLACK"])
         drawGrid(SCREEN)
         snake.render(SCREEN)
         food.render(SCREEN)
         pygame.display.update()
         pygame.time.Clock().tick(10)
+
+
+# Отрисовка счета
+# font = pygame.font.Font(None, 36)
+# text = font.render(f"Счет: {score}", True, WHITE)
+# screen.blit(text, (10, 10))
+#
+# # Для обновления счета (например, когда змейка съедает еду), увеличьте score на 1:
+# if snake[0] == food:
+#     score += 1
