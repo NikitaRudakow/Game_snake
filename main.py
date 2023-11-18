@@ -35,6 +35,7 @@ class Snake:
         self.positions = [((WIDTH // 2), (HEIGHT // 2))]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
         self.color = color
+        self.score = 0
 
     def get_head_position(self):
         return self.positions[0]
@@ -42,6 +43,7 @@ class Snake:
     def update(self, snake2=None):
         cur = self.get_head_position()
         x, y = self.direction
+        self.score += 1
         new = (((cur[0] + (x*GRIDSIZE)) % WIDTH), (cur[1] + (y*GRIDSIZE)) % HEIGHT)
         if snake2 is not None:
             if len(self.positions) > 2 and new in self.positions[2:] or new in snake2.positions[2:]:
@@ -134,44 +136,78 @@ def handle_events(snake_1, snake_2=None):
                         snake_2.direction = RIGHT
 
 # Инициализация змеи и еды
-snake_1 = Snake(GREEN)
-snake_2 = Snake(GREY)
-food = Food()
-wall = Wall()
-wall1 = Wall()
-wall2 = Wall()
-wall3 = Wall()
 
-# Основной цикл игры
-while True:
-    handle_events(snake_1, snake_2)
-    snake_1.update(snake_2)
-    snake_2.update(snake_1)
+#
+# # Основной цикл игры
+# while True:
+#     handle_events(snake_1, snake_2)
+#     snake_1.update(snake_2)
+#     snake_2.update(snake_1)
+#
+#     # Проверка на столкновение с едой
+#     if snake_1.get_head_position() == food.position:
+#         snake_1.length += 1
+#         food.randomize_position()
+#         wall.randomize_position()
+#
+#     if snake_2.get_head_position() == food.position:
+#         snake_2.length += 1
+#         food.randomize_position()
+#         wall.randomize_position()
+#     # if snake_2.get_head_position() == snake_1.get_head_position():
+#     #     snake_1.reset()
+#
+#     if snake_1.get_head_position() == wall.position:
+#         snake_1.reset()
+#     if snake_2.get_head_position() == wall.position:
+#         snake_2.reset()
+#
+#     SCREEN.fill(BLACK)
+#     drawGrid(SCREEN)
+#     snake_1.render(SCREEN)
+#     snake_2.render(SCREEN)
+#     food.render(SCREEN)
+#     wall.render(SCREEN)
+#
+#     pygame.display.update()
+#     pygame.time.Clock().tick(10) # Устанавливаем скорость змейки
 
-    # Проверка на столкновение с едой
-    if snake_1.get_head_position() == food.position:
-        snake_1.length += 1
-        food.randomize_position()
-        wall.randomize_position()
 
-    if snake_2.get_head_position() == food.position:
-        snake_2.length += 1
-        food.randomize_position()
-        wall.randomize_position()
-    # if snake_2.get_head_position() == snake_1.get_head_position():
-    #     snake_1.reset()
+def f_level():
+    snake = Snake(GREEN)
+    food = Food()
+    while True:
+        handle_events(snake)
+        snake.update()
 
-    if snake_1.get_head_position() == wall.position:
-        snake_1.reset()
-    if snake_2.get_head_position() == wall.position:
-        snake_2.reset()
+        # Проверка на столкновение с едой
+        if snake.get_head_position() == food.position:
+            snake.length += 1
+            food.randomize_position()
 
-    SCREEN.fill(BLACK)
-    drawGrid(SCREEN)
-    snake_1.render(SCREEN)
-    snake_2.render(SCREEN)
-    food.render(SCREEN)
-    wall.render(SCREEN)
+        SCREEN.fill(BLACK)
+        drawGrid(SCREEN)
+        snake.render(SCREEN)
+        food.render(SCREEN)
+        pygame.display.update()
+        pygame.time.Clock().tick(10)  # Устанавливаем скорость змейки
 
-    pygame.display.update()
-    pygame.time.Clock().tick(15)  # Устанавливаем скорость змейки
+
+def s_level():
+    snake = Snake(GREEN)
+    food = Food()
+    while True:
+        handle_events(snake)
+        snake.update()
+
+        # Проверка на столкновение с едой
+        if snake.get_head_position() == food.position:
+            snake.length += 1
+            food.randomize_position()
+
+        SCREEN.fill(BLACK)
+        drawGrid(SCREEN)
+        snake.render(SCREEN)
+        food.render(SCREEN)
+        pygame.display.update()
+        pygame.time.Clock().tick(10)
