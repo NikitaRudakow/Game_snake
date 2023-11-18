@@ -1,15 +1,12 @@
 import pygame
 import sys
 import random
-from config import colors, WIDTH, HEIGHT
-# Инициализация Pygame
+from config import colors, WIDTH, HEIGHT, GRIDSIZE
+
 pygame.init()
 
-# Параметры экран
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Змейка")
-
-# Цвета
 
 
 class Wall:
@@ -24,7 +21,8 @@ class Wall:
 
     def render(self, surface):
         pygame.draw.rect(surface, self.color, pygame.Rect(self.position[0], self.position[1], GRIDSIZE, GRIDSIZE))
-# Класс для представления змеи
+
+
 class Snake:
     def __init__(self, color):
         self.length = 1
@@ -89,7 +87,7 @@ LEFT = (-1, 0)
 RIGHT = (1, 0)
 
 # Размер ячейки сетки
-GRIDSIZE = 20
+
 
 # Функция отрисовки сетки
 def drawGrid(surface):
@@ -192,22 +190,32 @@ def f_level():
 def s_level():
     snake = Snake(colors["GREEN"])
     food = Food()
-    wall = Wall()
+    wall1 = Wall()
+    wall2 = Wall()
+    wall3 = Wall()
     while True:
         handle_events(snake)
         snake.update()
 
-        # Проверка на столкновение с едой
         if snake.get_head_position() == food.position:
             snake.length += 1
             food.randomize_position()
+            wall1.randomize_position()
+            wall2.randomize_position()
+            wall3.randomize_position()
+
+        if snake.get_head_position() == wall1.position or snake.get_head_position() == wall2.position or snake.get_head_position() == wall3.position:
+            snake.reset()
 
         SCREEN.fill(colors["BLACK"])
         drawGrid(SCREEN)
         snake.render(SCREEN)
         food.render(SCREEN)
+        wall1.render(SCREEN)
+        wall2.render(SCREEN)
+        wall3.render(SCREEN)
         pygame.display.update()
-        pygame.time.Clock().tick(10)
+        pygame.time.Clock().tick(15)
 
 
 # Отрисовка счета

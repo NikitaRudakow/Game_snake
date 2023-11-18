@@ -1,7 +1,7 @@
 import pygame
 import sys
 from config import colors, WIDTH, HEIGHT
-from main import f_level
+from main import f_level, s_level
 # Инициализация Pygame
 pygame.init()
 
@@ -35,27 +35,31 @@ def draw_menu():
     screen.blit(text_highscore, (170 - text_highscore.get_width() // 2, 365))
 
 
-# Основной цикл программы
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            # Обработка нажатий на кнопки
-            x, y = pygame.mouse.get_pos()
-            if 50 < x < 350:
-                if 50 < y < 100:
-                    f_level()
-                elif 150 < y < 200:
-                    print("Quit button pressed")
-                elif 250 < y < 300:
-                    print("Options button pressed")
-                elif 350 < y < 400:
-                    print("Highscore button pressed")
+def menu():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                # Обработка нажатий на кнопки
+                x, y = pygame.mouse.get_pos()
+                if 50 < x < 350:
+                    if 50 < y < 100:
+                        f_level()
+                    elif 150 < y < 200:
+                        s_level()
+                    elif 250 < y < 300:
+                        print("Options button pressed")
+                    elif 350 < y < 400:
+                        print("Highscore button pressed")
 
-    # Отрисовка меню
-    draw_menu()
+        # Отрисовка меню
+        draw_menu()
 
-    # Обновление экрана
-    pygame.display.flip()
+        # Обновление экрана
+        pygame.display.flip()
+    # Основной цикл программы
+
+if __name__ == "__main__":
+    menu()

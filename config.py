@@ -9,3 +9,4 @@ colors = {
 
 WIDTH = 800
 HEIGHT = 600
+GRIDSIZE = 20
