@@ -210,8 +210,10 @@ def s_level():
 
         if snake.get_head_position() == wall1.position or snake.get_head_position() == wall2.position or snake.get_head_position() == wall3.position:
             snake.reset()
-
         SCREEN.fill(colors["BLACK"])
+        font = pygame.font.Font(None, 30)
+        scoretext = font.render("Score:" + str(snake.length), 1, (255, 255, 255))
+        SCREEN.blit(scoretext, (500, 457))
         drawGrid(SCREEN)
         snake.render(SCREEN)
         food.render(SCREEN)
