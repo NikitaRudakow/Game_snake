@@ -24,15 +24,15 @@ def draw_menu():
     pygame.draw.rect(screen, colors["RED"], (50, 350, 300, 50))
 
     # Рисование текста на кнопках
-    text_play = font.render("Play", True, colors["BLACK"])
-    text_quit = font.render("Quit", True, colors["BLACK"])
-    text_option = font.render("Options", True, colors["BLACK"])
-    text_highscore = font.render("Highscore", True, colors["BLACK"])
+    text_level1 = font.render("Level 1", True, colors["BLACK"])
+    text_level2 = font.render("Level 2", True, colors["BLACK"])
+    text_level3 = font.render("Level 3", True, colors["BLACK"])
+    text_level_two_players = font.render("Two players", True, colors["BLACK"])
 
-    screen.blit(text_play, (170 - text_play.get_width() // 2, 65))
-    screen.blit(text_quit, (170 - text_quit.get_width() // 2, 165))
-    screen.blit(text_option, (170 - text_option.get_width() // 2, 265))
-    screen.blit(text_highscore, (170 - text_highscore.get_width() // 2, 365))
+    screen.blit(text_level1, (170 - text_level1.get_width() // 2, 65))
+    screen.blit(text_level2, (170 - text_level2.get_width() // 2, 165))
+    screen.blit(text_level3, (170 - text_level3.get_width() // 2, 265))
+    screen.blit(text_level_two_players, (170 - text_level_two_players.get_width() // 2, 365))
 
 
 def menu():

@@ -75,6 +75,7 @@ class Food:
         self.position = (0, 0)
         self.color = colors["RED"]
         self.randomize_position()
+        self.countPlusHp = 1
 
     def randomize_position(self):
         self.position = (random.randint(0, (WIDTH//GRIDSIZE)-1) * GRIDSIZE,
@@ -179,8 +180,10 @@ def f_level():
 
         # Проверка на столкновение с едой
         if snake.get_head_position() == food.position:
-            snake.length += 1
+            snake.length += food.countPlusHp
             food.randomize_position()
+            food.countPlusHp = random.randint(1, 5)
+            food.countPlusHp = random.randint(1, 5)
 
         #SCREEN.fill(colors["BLACK"])
         SCREEN.blit(background, (0,0))
@@ -202,8 +205,9 @@ def s_level():
         snake.update()
 
         if snake.get_head_position() == food.position:
-            snake.length += 1
+            snake.length += food.countPlusHp
             food.randomize_position()
+            food.countPlusHp = random.randint(1, 5)
             wall1.randomize_position()
             wall2.randomize_position()
             wall3.randomize_position()
@@ -213,7 +217,7 @@ def s_level():
         SCREEN.fill(colors["BLACK"])
         font = pygame.font.Font(None, 30)
         scoretext = font.render("Score:" + str(snake.length), 1, (255, 255, 255))
-        SCREEN.blit(scoretext, (500, 457))
+        SCREEN.blit(scoretext, (0, 0))
         drawGrid(SCREEN)
         snake.render(SCREEN)
         food.render(SCREEN)
@@ -223,12 +227,3 @@ def s_level():
         pygame.display.update()
         pygame.time.Clock().tick(15)
 
-
-# Отрисовка счета
-# font = pygame.font.Font(None, 36)
-# text = font.render(f"Счет: {score}", True, WHITE)
-# screen.blit(text, (10, 10))
-#
-# # Для обновления счета (например, когда змейка съедает еду), увеличьте score на 1:
-# if snake[0] == food:
-#     score += 1
