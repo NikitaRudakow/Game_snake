@@ -1,7 +1,7 @@
 import pygame
 import sys
 from config import colors, WIDTH, HEIGHT
-from main import f_level, s_level
+from main import f_level, s_level, two_players_1
 # Инициализация Pygame
 pygame.init()
 
@@ -50,9 +50,9 @@ def menu():
                     elif 150 < y < 200:
                         s_level()
                     elif 250 < y < 300:
-                        print("Options button pressed")
+                        two_players_1()
                     elif 350 < y < 400:
-                        print("Highscore button pressed")
+                        two_players_1()
 
         # Отрисовка меню
         draw_menu()
