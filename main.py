@@ -184,9 +184,10 @@ def f_level():
             food.randomize_position()
             food.countPlusHp = random.randint(1, 5)
             food.countPlusHp = random.randint(1, 5)
-
-        #SCREEN.fill(colors["BLACK"])
-        SCREEN.blit(background, (0,0))
+        SCREEN.fill(colors["BLACK"])
+        font = pygame.font.Font(None, 30)
+        scoretext = font.render("Score:" + str(snake.length), 1, (255, 255, 255))
+        SCREEN.blit(scoretext, (0, 0))
         drawGrid(SCREEN)
         snake.render(SCREEN)
         food.render(SCREEN)
