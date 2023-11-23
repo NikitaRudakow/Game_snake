@@ -181,9 +181,9 @@ def f_level():
         if snake.get_head_position() == food.position:
             snake.length += food.countPlusHp
             food.randomize_position()
-            random_list = [0, 1]
+            random_list = [0, 1, 3]
             if 1 == random.choice(random_list):
-                food.countPlusHp = random.randint(1, 5)
+                food.countPlusHp = random.randint(2, 5)
                 food.color = colors["GOLD"]
             else:
                 food.countPlusHp = 1
@@ -213,9 +213,9 @@ def s_level():
         if snake.get_head_position() == food.position:
             snake.length += food.countPlusHp
             food.randomize_position()
-            random_list = [0, 1]
+            random_list = [0, 1, 3]
             if 1 == random.choice(random_list):
-                food.countPlusHp = random.randint(1, 5)
+                food.countPlusHp = random.randint(2, 5)
                 food.color = colors["GOLD"]
             else:
                 food.countPlusHp = 1
