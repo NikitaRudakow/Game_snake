@@ -76,7 +76,6 @@ class Food:
         self.color = colors["RED"]
         self.randomize_position()
         self.countPlusHp = 1
-
     def randomize_position(self):
         self.position = (random.randint(0, (WIDTH//GRIDSIZE)-1) * GRIDSIZE,
                          random.randint(0, (HEIGHT//GRIDSIZE)-1) * GRIDSIZE)
@@ -182,8 +181,14 @@ def f_level():
         if snake.get_head_position() == food.position:
             snake.length += food.countPlusHp
             food.randomize_position()
-            food.countPlusHp = random.randint(1, 5)
-            food.countPlusHp = random.randint(1, 5)
+            random_list = [0, 1]
+            if 1 == random.choice(random_list):
+                food.countPlusHp = random.randint(1, 5)
+                food.color = colors["GOLD"]
+            else:
+                food.countPlusHp = 1
+                food.color = colors["RED"]
+
         SCREEN.fill(colors["BLACK"])
         font = pygame.font.Font(None, 30)
         scoretext = font.render("Score:" + str(snake.length), 1, (255, 255, 255))
@@ -208,7 +213,13 @@ def s_level():
         if snake.get_head_position() == food.position:
             snake.length += food.countPlusHp
             food.randomize_position()
-            food.countPlusHp = random.randint(1, 5)
+            random_list = [0, 1]
+            if 1 == random.choice(random_list):
+                food.countPlusHp = random.randint(1, 5)
+                food.color = colors["GOLD"]
+            else:
+                food.countPlusHp = 1
+                food.color = colors["RED"]
             wall1.randomize_position()
             wall2.randomize_position()
             wall3.randomize_position()
