@@ -176,6 +176,12 @@ def two_players_1():
         #     snake_2.reset()
 
         SCREEN.fill(colors["BLACK"])
+        font = pygame.font.Font(None, 30)
+        scoretext1 = font.render("Score:" + str(snake_1.length), 1, snake_1.color)
+        SCREEN.blit(scoretext1, (0, 0))
+        drawGrid(SCREEN)
+        scoretext2 = font.render("Score:" + str(snake_2.length), 1, snake_2.color)
+        SCREEN.blit(scoretext2, (710, 0))
         drawGrid(SCREEN)
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
