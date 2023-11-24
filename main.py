@@ -8,7 +8,7 @@ pygame.init()
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 background = pygame.image.load('background.jpg')
 
-SCREEN.blit(background, (0,0))
+SCREEN.blit(background, (0, 0))
 pygame.display.set_caption("Змейка")
 
 
@@ -41,7 +41,7 @@ class Snake:
         cur = self.get_head_position()
         x, y = self.direction
         self.score += 1
-        new = (((cur[0] + (x*GRIDSIZE)) % WIDTH), (cur[1] + (y*GRIDSIZE)) % HEIGHT)
+        new = (((cur[0] + (x * GRIDSIZE)) % WIDTH), (cur[1] + (y * GRIDSIZE)) % HEIGHT)
         if snake2 is not None:
             if len(self.positions) > 2 and new in self.positions[2:] or new in snake2.positions[2:]:
                 self.reset()
@@ -69,6 +69,7 @@ class Snake:
         for p in self.positions:
             pygame.draw.rect(surface, self.color, pygame.Rect(p[0], p[1], GRIDSIZE, GRIDSIZE))
 
+
 # Класс для представления еды
 class Food:
     def __init__(self):
@@ -76,18 +77,21 @@ class Food:
         self.color = colors["RED"]
         self.randomize_position()
         self.countPlusHp = 1
+
     def randomize_position(self):
-        self.position = (random.randint(0, (WIDTH//GRIDSIZE)-1) * GRIDSIZE,
-                         random.randint(0, (HEIGHT//GRIDSIZE)-1) * GRIDSIZE)
+        self.position = (random.randint(0, (WIDTH // GRIDSIZE) - 1) * GRIDSIZE,
+                         random.randint(0, (HEIGHT // GRIDSIZE) - 1) * GRIDSIZE)
 
     def render(self, surface):
         pygame.draw.rect(surface, self.color, pygame.Rect(self.position[0], self.position[1], GRIDSIZE, GRIDSIZE))
+
 
 # Направления
 UP = (0, -1)
 DOWN = (0, 1)
 LEFT = (-1, 0)
 RIGHT = (1, 0)
+
 
 # Размер ячейки сетки
 
@@ -97,7 +101,8 @@ def drawGrid(surface):
     for y in range(0, HEIGHT, GRIDSIZE):
         for x in range(0, WIDTH, GRIDSIZE):
             rect = pygame.Rect(x, y, GRIDSIZE, GRIDSIZE)
-            #pygame.draw.rect(surface, colors["BLACK"], rect, 1)
+            # pygame.draw.rect(surface, colors["BLACK"], rect, 1)
+
 
 # Функция обработки событий
 def handle_events(snake_1, snake_2=None):
@@ -133,6 +138,17 @@ def handle_events(snake_1, snake_2=None):
                         snake_2.direction = RIGHT
 
 
+def show_score(screen, snake_1, snake_2=None):
+    screen.fill(colors["BLACK"])
+    drawGrid(screen)
+    font = pygame.font.Font(None, 30)
+    score_text1 = font.render("Score:" + str(snake_1.length), 1, snake_1.color)
+    screen.blit(score_text1, (0, 0))
+    if snake_2 is not None:
+        score_text2 = font.render("Score:" + str(snake_2.length), 1, snake_2.color)
+        screen.blit(score_text2, (710, 0))
+
+
 def two_players_1():
     snake_1 = Snake(colors["WHITE"])
     snake_2 = Snake(colors["PINK"])
@@ -165,14 +181,7 @@ def two_players_1():
                 food.countPlusHp = 1
                 food.color = colors["RED"]
 
-        SCREEN.fill(colors["BLACK"])
-        font = pygame.font.Font(None, 30)
-        scoretext1 = font.render("Score:" + str(snake_1.length), 1, snake_1.color)
-        SCREEN.blit(scoretext1, (0, 0))
-        drawGrid(SCREEN)
-        scoretext2 = font.render("Score:" + str(snake_2.length), 1, snake_2.color)
-        SCREEN.blit(scoretext2, (710, 0))
-        drawGrid(SCREEN)
+        show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
         food.render(SCREEN)
@@ -230,14 +239,7 @@ def two_players_2():
         if snake_2.get_head_position() == wall1.position or snake_2.get_head_position() == wall2.position or snake_2.get_head_position() == wall3.position:
             snake_2.reset()
 
-        SCREEN.fill(colors["BLACK"])
-        font = pygame.font.Font(None, 30)
-        scoretext1 = font.render("Score:" + str(snake_1.length), 1, snake_1.color)
-        SCREEN.blit(scoretext1, (0, 0))
-        drawGrid(SCREEN)
-        scoretext2 = font.render("Score:" + str(snake_2.length), 1, snake_2.color)
-        SCREEN.blit(scoretext2, (710, 0))
-        drawGrid(SCREEN)
+        show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
         wall1.render(SCREEN)
@@ -247,7 +249,8 @@ def two_players_2():
         # wall.render(SCREEN)
 
         pygame.display.update()
-        pygame.time.Clock().tick(15) # Устанавливаем скорость змейки
+        pygame.time.Clock().tick(15)  # Устанавливаем скорость змейки
+
 
 def two_players_3():
     snake_1 = Snake(colors["WHITE"])
@@ -310,14 +313,7 @@ def two_players_3():
         if snake_2.get_head_position() == wall1.position or snake_2.get_head_position() == wall2.position or snake_2.get_head_position() == wall3.position or snake_2.get_head_position() == wall4.position or snake_2.get_head_position() == wall5.position or snake_2.get_head_position() == wall6.position or snake_2.get_head_position() == wall7.position:
             snake_2.reset()
 
-        SCREEN.fill(colors["BLACK"])
-        font = pygame.font.Font(None, 30)
-        scoretext1 = font.render("Score:" + str(snake_1.length), 1, snake_1.color)
-        SCREEN.blit(scoretext1, (0, 0))
-        drawGrid(SCREEN)
-        scoretext2 = font.render("Score:" + str(snake_2.length), 1, snake_2.color)
-        SCREEN.blit(scoretext2, (710, 0))
-        drawGrid(SCREEN)
+        show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
         wall1.render(SCREEN)
@@ -331,7 +327,9 @@ def two_players_3():
         # wall.render(SCREEN)
 
         pygame.display.update()
-        pygame.time.Clock().tick(15) # Устанавливаем скорость змейки
+        pygame.time.Clock().tick(15)  # Устанавливаем скорость змейки
+
+
 def f_level():
     snake = Snake(colors["GREEN"])
     food = Food()
@@ -351,11 +349,7 @@ def f_level():
                 food.countPlusHp = 1
                 food.color = colors["RED"]
 
-        SCREEN.fill(colors["BLACK"])
-        font = pygame.font.Font(None, 30)
-        scoretext = font.render("Score:" + str(snake.length), 1, (255, 255, 255))
-        SCREEN.blit(scoretext, (0, 0))
-        drawGrid(SCREEN)
+        show_score(screen=SCREEN, snake_1=snake)
         snake.render(SCREEN)
         food.render(SCREEN)
         pygame.display.update()
@@ -388,11 +382,7 @@ def s_level():
 
         if snake.get_head_position() == wall1.position or snake.get_head_position() == wall2.position or snake.get_head_position() == wall3.position:
             snake.reset()
-        SCREEN.fill(colors["BLACK"])
-        font = pygame.font.Font(None, 30)
-        scoretext = font.render("Score:" + str(snake.length), 1, (255, 255, 255))
-        SCREEN.blit(scoretext, (0, 0))
-        drawGrid(SCREEN)
+        show_score(screen=SCREEN, snake_1=snake)
         snake.render(SCREEN)
         food.render(SCREEN)
         wall1.render(SCREEN)
@@ -400,6 +390,7 @@ def s_level():
         wall3.render(SCREEN)
         pygame.display.update()
         pygame.time.Clock().tick(15)
+
 
 def t_level():
     snake = Snake(colors["GREEN"])
@@ -434,14 +425,10 @@ def t_level():
             wall6.randomize_position()
             wall7.randomize_position()
 
-
         if snake.get_head_position() == wall1.position or snake.get_head_position() == wall2.position or snake.get_head_position() == wall3.position or snake.get_head_position() == wall4.position or snake.get_head_position() == wall5.position or snake.get_head_position() == wall6.position or snake.get_head_position() == wall7.position:
             snake.reset()
-        SCREEN.fill(colors["BLACK"])
-        font = pygame.font.Font(None, 30)
-        scoretext = font.render("Score:" + str(snake.length), 1, (255, 255, 255))
-        SCREEN.blit(scoretext, (0, 0))
-        drawGrid(SCREEN)
+        show_score(screen=SCREEN, snake_1=snake)
+
         snake.render(SCREEN)
         food.render(SCREEN)
         wall1.render(SCREEN)
