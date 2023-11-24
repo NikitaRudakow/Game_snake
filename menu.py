@@ -18,11 +18,12 @@ def draw_menu():
     screen.fill(colors["WHITE"])
 
     # Рисование кнопок
-    pygame.draw.rect(screen, colors["RED"], (50, 50, 300, 40))
-    pygame.draw.rect(screen, colors["RED"], (400, 50, 300, 50))
-    pygame.draw.rect(screen, colors["RED"], (50, 150, 300, 50))
-    pygame.draw.rect(screen, colors["RED"], (400, 150, 300, 50))
+    pygame.draw.rect(screen, colors["RED"], (50, 50, 300, 50))
     pygame.draw.rect(screen, colors["RED"], (50, 250, 300, 50))
+    pygame.draw.rect(screen, colors["RED"], (50, 150, 300, 50))
+
+    pygame.draw.rect(screen, colors["RED"], (400, 50, 300, 50))
+    pygame.draw.rect(screen, colors["RED"], (400, 150, 300, 50))
     pygame.draw.rect(screen, colors["RED"], (400, 250, 300, 50))
 
     # Рисование текста на кнопках
@@ -32,12 +33,13 @@ def draw_menu():
     text_one_player = font.render("One player", True, colors["BLACK"])
     text_level_two_players = font.render("Two players", True, colors["BLACK"])
 
-    screen.blit(text_one_player, (170 - text_one_player.get_width() // 2, 20))
-    screen.blit(text_level1, (170 - text_level1.get_width() // 2, 65))
+    screen.blit(text_one_player, (125, 20))
+    screen.blit(text_level_two_players, (480, 20))
+    screen.blit(text_level1, (150, 65))
     screen.blit(text_level1, (510, 65))
-    screen.blit(text_level2, (170 - text_level2.get_width() // 2, 165))
+    screen.blit(text_level2, (150, 165))
     screen.blit(text_level2, (510, 165))
-    screen.blit(text_level3, (170 - text_level3.get_width() // 2, 265))
+    screen.blit(text_level3, (150, 265))
     screen.blit(text_level3, (510, 265))
 
 
