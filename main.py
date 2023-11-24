@@ -305,9 +305,9 @@ def two_players_3():
         if snake_2.get_head_position() == snake_1.get_head_position():
             snake_1.reset()
 
-        if snake_1.get_head_position() == wall1.position or snake_1.get_head_position() == wall2.position or snake_1.get_head_position() == wall3.position or snake.get_head_position() == wall4.position or snake_1.get_head_position() == wall5.position or snake_1.get_head_position() == wall6.position or snake_1.get_head_position() == wall7.position:
+        if snake_1.get_head_position() == wall1.position or snake_1.get_head_position() == wall2.position or snake_1.get_head_position() == wall3.position or snake_1.get_head_position() == wall4.position or snake_1.get_head_position() == wall5.position or snake_1.get_head_position() == wall6.position or snake_1.get_head_position() == wall7.position:
             snake_1.reset()
-        if snake_2.get_head_position() == wall1.position or snake_2.get_head_position() == wall2.position or snake_2.get_head_position() == wall3.position or or snake.get_head_position() == wall4.position or snake_2.get_head_position() == wall5.position or snake_2.get_head_position() == wall6.position or snake_2.get_head_position() == wall7.position:
+        if snake_2.get_head_position() == wall1.position or snake_2.get_head_position() == wall2.position or snake_2.get_head_position() == wall3.position or snake_2.get_head_position() == wall4.position or snake_2.get_head_position() == wall5.position or snake_2.get_head_position() == wall6.position or snake_2.get_head_position() == wall7.position:
             snake_2.reset()
 
         SCREEN.fill(colors["BLACK"])
