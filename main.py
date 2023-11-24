@@ -152,7 +152,7 @@ def randomize_position_walls(walls):
         wall.randomize_position()
 
 
-def check_snake_position_with_walls(snake_1, walls, snake_2=None,):
+def check_snake_position_with_walls(snake_1, walls, snake_2=None, ):
     for wall in walls:
         if wall.position == snake_1.get_head_position():
             snake_1.reset()
@@ -161,43 +161,36 @@ def check_snake_position_with_walls(snake_1, walls, snake_2=None,):
                 snake_2.reset()
 
 
+def check_snake_position_with_food(snake, food, walls=None):
+    if snake.get_head_position() == food.position:
+        snake.length += food.countPlusHp
+        food.randomize_position()
+        random_list = [0, 1, 3]
+        if 1 == random.choice(random_list):
+            food.countPlusHp = random.randint(2, 5)
+            food.color = colors["GOLD"]
+        else:
+            food.countPlusHp = 1
+            food.color = colors["RED"]
+        if walls is not None:
+            randomize_position_walls(walls)
+
+
 def two_players_1():
     snake_1 = Snake(colors["WHITE"])
     snake_2 = Snake(colors["PINK"])
     food = Food()
-    # Основной цикл игры
+
     while True:
         handle_events(snake_1, snake_2)
         snake_1.update(snake_2)
         snake_2.update(snake_1)
-
-        if snake_1.get_head_position() == food.position:
-            snake_1.length += food.countPlusHp
-            food.randomize_position()
-            random_list = [0, 1, 3]
-            if 1 == random.choice(random_list):
-                food.countPlusHp = random.randint(2, 5)
-                food.color = colors["GOLD"]
-            else:
-                food.countPlusHp = 1
-                food.color = colors["RED"]
-
-        if snake_2.get_head_position() == food.position:
-            snake_2.length += food.countPlusHp
-            food.randomize_position()
-            random_list = [0, 1, 3]
-            if 1 == random.choice(random_list):
-                food.countPlusHp = random.randint(2, 5)
-                food.color = colors["GOLD"]
-            else:
-                food.countPlusHp = 1
-                food.color = colors["RED"]
-
+        check_snake_position_with_food(snake_1, food)
+        check_snake_position_with_food(snake_2, food)
         show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
         food.render(SCREEN)
-
         pygame.display.update()
         pygame.time.Clock().tick(10)
 
@@ -212,45 +205,19 @@ def two_players_2():
         handle_events(snake_1, snake_2)
         snake_1.update(snake_2)
         snake_2.update(snake_1)
-        if snake_1.get_head_position() == food.position:
-            snake_1.length += food.countPlusHp
-            food.randomize_position()
-            random_list = [0, 1, 3]
-            if 1 == random.choice(random_list):
-                food.countPlusHp = random.randint(2, 5)
-                food.color = colors["GOLD"]
-            else:
-                food.countPlusHp = 1
-                food.color = colors["RED"]
-            randomize_position_walls(walls)
-
-        if snake_2.get_head_position() == food.position:
-            snake_2.length += food.countPlusHp
-            food.randomize_position()
-            random_list = [0, 1, 3]
-            if 1 == random.choice(random_list):
-                food.countPlusHp = random.randint(2, 5)
-                food.color = colors["GOLD"]
-            else:
-                food.countPlusHp = 1
-                food.color = colors["RED"]
-            randomize_position_walls(walls)
-
+        check_snake_position_with_food(snake_1, food, walls)
+        check_snake_position_with_food(snake_2, food, walls)
         if snake_2.get_head_position() == snake_1.get_head_position():
             snake_1.reset()
             snake_2.reset()
-
         check_snake_position_with_walls(snake_1=snake_1, snake_2=snake_2, walls=walls)
         show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
-
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
         render_walls(walls=walls, screen=SCREEN)
         food.render(SCREEN)
-        # wall.render(SCREEN)
-
         pygame.display.update()
-        pygame.time.Clock().tick(15)  # Устанавливаем скорость змейки
+        pygame.time.Clock().tick(15)
 
 
 def two_players_3():
@@ -263,44 +230,17 @@ def two_players_3():
         handle_events(snake_1, snake_2)
         snake_1.update(snake_2)
         snake_2.update(snake_1)
-
-        if snake_1.get_head_position() == food.position:
-            snake_1.length += food.countPlusHp
-            food.randomize_position()
-            random_list = [0, 1, 3]
-            if 1 == random.choice(random_list):
-                food.countPlusHp = random.randint(2, 5)
-                food.color = colors["GOLD"]
-            else:
-                food.countPlusHp = 1
-                food.color = colors["RED"]
-            randomize_position_walls(walls)
-
-        if snake_2.get_head_position() == food.position:
-            snake_2.length += food.countPlusHp
-            food.randomize_position()
-            random_list = [0, 1, 3]
-            if 1 == random.choice(random_list):
-                food.countPlusHp = random.randint(2, 5)
-                food.color = colors["GOLD"]
-            else:
-                food.countPlusHp = 1
-                food.color = colors["RED"]
-            randomize_position_walls(walls)
-
+        check_snake_position_with_food(snake_1, food, walls)
+        check_snake_position_with_food(snake_2, food, walls)
         if snake_2.get_head_position() == snake_1.get_head_position():
             snake_1.reset()
             snake_2.reset()
-
         check_snake_position_with_walls(snake_1=snake_1, snake_2=snake_2, walls=walls)
         show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
-
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
         render_walls(walls, SCREEN)
         food.render(SCREEN)
-        # wall.render(SCREEN)
-
         pygame.display.update()
         pygame.time.Clock().tick(15)
 
@@ -311,18 +251,7 @@ def f_level():
     while True:
         handle_events(snake)
         snake.update()
-
-        if snake.get_head_position() == food.position:
-            snake.length += food.countPlusHp
-            food.randomize_position()
-            random_list = [0, 1, 3]
-            if 1 == random.choice(random_list):
-                food.countPlusHp = random.randint(2, 5)
-                food.color = colors["GOLD"]
-            else:
-                food.countPlusHp = 1
-                food.color = colors["RED"]
-
+        check_snake_position_with_food(snake, food)
         show_score(screen=SCREEN, snake_1=snake)
         snake.render(SCREEN)
         food.render(SCREEN)
@@ -339,18 +268,7 @@ def s_level():
         handle_events(snake)
         snake.update()
 
-        if snake.get_head_position() == food.position:
-            snake.length += food.countPlusHp
-            food.randomize_position()
-            random_list = [0, 1, 3]
-            if 1 == random.choice(random_list):
-                food.countPlusHp = random.randint(2, 5)
-                food.color = colors["GOLD"]
-            else:
-                food.countPlusHp = 1
-                food.color = colors["RED"]
-            randomize_position_walls(walls)
-
+        check_snake_position_with_food(snake, food, walls)
         check_snake_position_with_walls(snake_1=snake, walls=walls)
         show_score(screen=SCREEN, snake_1=snake)
         snake.render(SCREEN)
@@ -369,20 +287,8 @@ def t_level():
         handle_events(snake)
         snake.update()
 
-        if snake.get_head_position() == food.position:
-            snake.length += food.countPlusHp
-            food.randomize_position()
-            random_list = [0, 1, 3]
-            if 1 == random.choice(random_list):
-                food.countPlusHp = random.randint(2, 5)
-                food.color = colors["GOLD"]
-            else:
-                food.countPlusHp = 1
-                food.color = colors["RED"]
-            randomize_position_walls(walls)
-
+        check_snake_position_with_food(snake, food, walls)
         check_snake_position_with_walls(snake_1=snake, walls=walls)
-
         show_score(screen=SCREEN, snake_1=snake)
 
         snake.render(SCREEN)
