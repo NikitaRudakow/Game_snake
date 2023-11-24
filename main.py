@@ -143,7 +143,6 @@ def two_players_1():
         snake_1.update(snake_2)
         snake_2.update(snake_1)
 
-        # Проверка на столкновение с едой
         if snake_1.get_head_position() == food.position:
             snake_1.length += food.countPlusHp
             food.randomize_position()
@@ -154,7 +153,6 @@ def two_players_1():
             else:
                 food.countPlusHp = 1
                 food.color = colors["RED"]
-            # wall.randomize_position()
 
         if snake_2.get_head_position() == food.position:
             snake_2.length += food.countPlusHp
@@ -166,14 +164,6 @@ def two_players_1():
             else:
                 food.countPlusHp = 1
                 food.color = colors["RED"]
-            # wall.randomize_position()
-        # if snake_2.get_head_position() == snake_1.get_head_position():
-        #     snake_1.reset()
-
-        # if snake_1.get_head_position() == wall.position:
-        #     snake_1.reset()
-        # if snake_2.get_head_position() == wall.position:
-        #     snake_2.reset()
 
         SCREEN.fill(colors["BLACK"])
         font = pygame.font.Font(None, 30)
@@ -186,23 +176,23 @@ def two_players_1():
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
         food.render(SCREEN)
-        # wall.render(SCREEN)
 
         pygame.display.update()
-        pygame.time.Clock().tick(10) # Устанавливаем скорость змейки
+        pygame.time.Clock().tick(10)
 
 
 def two_players_2():
     snake_1 = Snake(colors["WHITE"])
     snake_2 = Snake(colors["PINK"])
     food = Food()
-    wall = Wall()
+    wall1 = Wall()
+    wall2 = Wall()
+    wall3 = Wall()
     # Основной цикл игры
     while True:
         handle_events(snake_1, snake_2)
         snake_1.update(snake_2)
         snake_2.update(snake_1)
-
         # Проверка на столкновение с едой
         if snake_1.get_head_position() == food.position:
             snake_1.length += food.countPlusHp
@@ -214,7 +204,9 @@ def two_players_2():
             else:
                 food.countPlusHp = 1
                 food.color = colors["RED"]
-            wall.randomize_position()
+            wall1.randomize_position()
+            wall2.randomize_position()
+            wall3.randomize_position()
 
         if snake_2.get_head_position() == food.position:
             snake_2.length += food.countPlusHp
@@ -226,13 +218,16 @@ def two_players_2():
             else:
                 food.countPlusHp = 1
                 food.color = colors["RED"]
-                wall.randomize_position()
+            wall1.randomize_position()
+            wall2.randomize_position()
+            wall3.randomize_position()
+
         if snake_2.get_head_position() == snake_1.get_head_position():
             snake_1.reset()
 
-        if snake_1.get_head_position() == wall.position:
+        if snake_1.get_head_position() == wall1.position or snake_1.get_head_position() == wall2.position or snake_1.get_head_position() == wall3.position:
             snake_1.reset()
-        if snake_2.get_head_position() == wall.position:
+        if snake_2.get_head_position() == wall1.position or snake_2.get_head_position() == wall2.position or snake_2.get_head_position() == wall3.position:
             snake_2.reset()
 
         SCREEN.fill(colors["BLACK"])
@@ -245,6 +240,9 @@ def two_players_2():
         drawGrid(SCREEN)
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
+        wall1.render(SCREEN)
+        wall2.render(SCREEN)
+        wall3.render(SCREEN)
         food.render(SCREEN)
         # wall.render(SCREEN)
 
