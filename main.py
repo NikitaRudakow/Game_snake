@@ -70,7 +70,6 @@ class Snake:
             pygame.draw.rect(surface, self.color, pygame.Rect(p[0], p[1], GRIDSIZE, GRIDSIZE))
 
 
-# Класс для представления еды
 class Food:
     def __init__(self):
         self.position = (0, 0)
@@ -86,17 +85,12 @@ class Food:
         pygame.draw.rect(surface, self.color, pygame.Rect(self.position[0], self.position[1], GRIDSIZE, GRIDSIZE))
 
 
-# Направления
 UP = (0, -1)
 DOWN = (0, 1)
 LEFT = (-1, 0)
 RIGHT = (1, 0)
 
 
-# Размер ячейки сетки
-
-
-# Функция отрисовки сетки
 def drawGrid(surface):
     for y in range(0, HEIGHT, GRIDSIZE):
         for x in range(0, WIDTH, GRIDSIZE):
@@ -104,7 +98,6 @@ def drawGrid(surface):
             # pygame.draw.rect(surface, colors["BLACK"], rect, 1)
 
 
-# Функция обработки событий
 def handle_events(snake_1, snake_2=None):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -147,6 +140,25 @@ def show_score(screen, snake_1, snake_2=None):
     if snake_2 is not None:
         score_text2 = font.render("Score:" + str(snake_2.length), 1, snake_2.color)
         screen.blit(score_text2, (710, 0))
+
+
+def render_walls(walls, screen):
+    for wall in walls:
+        wall.render(screen)
+
+
+def randomize_position_walls(walls):
+    for wall in walls:
+        wall.randomize_position()
+
+
+def check_snake_position_with_walls(snake_1, walls, snake_2=None,):
+    for wall in walls:
+        if wall.position == snake_1.get_head_position():
+            snake_1.reset()
+        if snake_2 is not None:
+            if wall.position == snake_2.get_head_position():
+                snake_2.reset()
 
 
 def two_players_1():
@@ -194,15 +206,12 @@ def two_players_2():
     snake_1 = Snake(colors["WHITE"])
     snake_2 = Snake(colors["PINK"])
     food = Food()
-    wall1 = Wall()
-    wall2 = Wall()
-    wall3 = Wall()
-    # Основной цикл игры
+    walls = [Wall() for i in range(3)]
+
     while True:
         handle_events(snake_1, snake_2)
         snake_1.update(snake_2)
         snake_2.update(snake_1)
-        # Проверка на столкновение с едой
         if snake_1.get_head_position() == food.position:
             snake_1.length += food.countPlusHp
             food.randomize_position()
@@ -213,9 +222,7 @@ def two_players_2():
             else:
                 food.countPlusHp = 1
                 food.color = colors["RED"]
-            wall1.randomize_position()
-            wall2.randomize_position()
-            wall3.randomize_position()
+            randomize_position_walls(walls)
 
         if snake_2.get_head_position() == food.position:
             snake_2.length += food.countPlusHp
@@ -227,24 +234,18 @@ def two_players_2():
             else:
                 food.countPlusHp = 1
                 food.color = colors["RED"]
-            wall1.randomize_position()
-            wall2.randomize_position()
-            wall3.randomize_position()
+            randomize_position_walls(walls)
 
         if snake_2.get_head_position() == snake_1.get_head_position():
             snake_1.reset()
-
-        if snake_1.get_head_position() == wall1.position or snake_1.get_head_position() == wall2.position or snake_1.get_head_position() == wall3.position:
-            snake_1.reset()
-        if snake_2.get_head_position() == wall1.position or snake_2.get_head_position() == wall2.position or snake_2.get_head_position() == wall3.position:
             snake_2.reset()
 
+        check_snake_position_with_walls(snake_1=snake_1, snake_2=snake_2, walls=walls)
         show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
+
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
-        wall1.render(SCREEN)
-        wall2.render(SCREEN)
-        wall3.render(SCREEN)
+        render_walls(walls=walls, screen=SCREEN)
         food.render(SCREEN)
         # wall.render(SCREEN)
 
@@ -256,19 +257,13 @@ def two_players_3():
     snake_1 = Snake(colors["WHITE"])
     snake_2 = Snake(colors["PINK"])
     food = Food()
-    wall1 = Wall()
-    wall2 = Wall()
-    wall3 = Wall()
-    wall4 = Wall()
-    wall5 = Wall()
-    wall6 = Wall()
-    wall7 = Wall()
-    # Основной цикл игры
+    walls = [Wall() for i in range(7)]
+
     while True:
         handle_events(snake_1, snake_2)
         snake_1.update(snake_2)
         snake_2.update(snake_1)
-        # Проверка на столкновение с едой
+
         if snake_1.get_head_position() == food.position:
             snake_1.length += food.countPlusHp
             food.randomize_position()
@@ -279,13 +274,7 @@ def two_players_3():
             else:
                 food.countPlusHp = 1
                 food.color = colors["RED"]
-            wall1.randomize_position()
-            wall2.randomize_position()
-            wall3.randomize_position()
-            wall4.randomize_position()
-            wall5.randomize_position()
-            wall6.randomize_position()
-            wall7.randomize_position()
+            randomize_position_walls(walls)
 
         if snake_2.get_head_position() == food.position:
             snake_2.length += food.countPlusHp
@@ -297,37 +286,23 @@ def two_players_3():
             else:
                 food.countPlusHp = 1
                 food.color = colors["RED"]
-            wall1.randomize_position()
-            wall2.randomize_position()
-            wall3.randomize_position()
-            wall4.randomize_position()
-            wall5.randomize_position()
-            wall6.randomize_position()
-            wall7.randomize_position()
+            randomize_position_walls(walls)
 
         if snake_2.get_head_position() == snake_1.get_head_position():
             snake_1.reset()
-
-        if snake_1.get_head_position() == wall1.position or snake_1.get_head_position() == wall2.position or snake_1.get_head_position() == wall3.position or snake_1.get_head_position() == wall4.position or snake_1.get_head_position() == wall5.position or snake_1.get_head_position() == wall6.position or snake_1.get_head_position() == wall7.position:
-            snake_1.reset()
-        if snake_2.get_head_position() == wall1.position or snake_2.get_head_position() == wall2.position or snake_2.get_head_position() == wall3.position or snake_2.get_head_position() == wall4.position or snake_2.get_head_position() == wall5.position or snake_2.get_head_position() == wall6.position or snake_2.get_head_position() == wall7.position:
             snake_2.reset()
 
+        check_snake_position_with_walls(snake_1=snake_1, snake_2=snake_2, walls=walls)
         show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
+
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
-        wall1.render(SCREEN)
-        wall2.render(SCREEN)
-        wall3.render(SCREEN)
-        wall4.render(SCREEN)
-        wall5.render(SCREEN)
-        wall6.render(SCREEN)
-        wall7.render(SCREEN)
+        render_walls(walls, SCREEN)
         food.render(SCREEN)
         # wall.render(SCREEN)
 
         pygame.display.update()
-        pygame.time.Clock().tick(15)  # Устанавливаем скорость змейки
+        pygame.time.Clock().tick(15)
 
 
 def f_level():
@@ -337,7 +312,6 @@ def f_level():
         handle_events(snake)
         snake.update()
 
-        # Проверка на столкновение с едой
         if snake.get_head_position() == food.position:
             snake.length += food.countPlusHp
             food.randomize_position()
@@ -353,15 +327,14 @@ def f_level():
         snake.render(SCREEN)
         food.render(SCREEN)
         pygame.display.update()
-        pygame.time.Clock().tick(10)  # Устанавливаем скорость змейки
+        pygame.time.Clock().tick(10)
 
 
 def s_level():
     snake = Snake(colors["GREEN"])
     food = Food()
-    wall1 = Wall()
-    wall2 = Wall()
-    wall3 = Wall()
+    walls = [Wall() for i in range(3)]
+
     while True:
         handle_events(snake)
         snake.update()
@@ -376,18 +349,13 @@ def s_level():
             else:
                 food.countPlusHp = 1
                 food.color = colors["RED"]
-            wall1.randomize_position()
-            wall2.randomize_position()
-            wall3.randomize_position()
+            randomize_position_walls(walls)
 
-        if snake.get_head_position() == wall1.position or snake.get_head_position() == wall2.position or snake.get_head_position() == wall3.position:
-            snake.reset()
+        check_snake_position_with_walls(snake_1=snake, walls=walls)
         show_score(screen=SCREEN, snake_1=snake)
         snake.render(SCREEN)
         food.render(SCREEN)
-        wall1.render(SCREEN)
-        wall2.render(SCREEN)
-        wall3.render(SCREEN)
+        render_walls(walls, SCREEN)
         pygame.display.update()
         pygame.time.Clock().tick(15)
 
@@ -395,13 +363,7 @@ def s_level():
 def t_level():
     snake = Snake(colors["GREEN"])
     food = Food()
-    wall1 = Wall()
-    wall2 = Wall()
-    wall3 = Wall()
-    wall4 = Wall()
-    wall5 = Wall()
-    wall6 = Wall()
-    wall7 = Wall()
+    walls = [Wall() for i in range(7)]
 
     while True:
         handle_events(snake)
@@ -417,26 +379,14 @@ def t_level():
             else:
                 food.countPlusHp = 1
                 food.color = colors["RED"]
-            wall1.randomize_position()
-            wall2.randomize_position()
-            wall3.randomize_position()
-            wall4.randomize_position()
-            wall5.randomize_position()
-            wall6.randomize_position()
-            wall7.randomize_position()
+            randomize_position_walls(walls)
 
-        if snake.get_head_position() == wall1.position or snake.get_head_position() == wall2.position or snake.get_head_position() == wall3.position or snake.get_head_position() == wall4.position or snake.get_head_position() == wall5.position or snake.get_head_position() == wall6.position or snake.get_head_position() == wall7.position:
-            snake.reset()
+        check_snake_position_with_walls(snake_1=snake, walls=walls)
+
         show_score(screen=SCREEN, snake_1=snake)
 
         snake.render(SCREEN)
         food.render(SCREEN)
-        wall1.render(SCREEN)
-        wall2.render(SCREEN)
-        wall3.render(SCREEN)
-        wall4.render(SCREEN)
-        wall5.render(SCREEN)
-        wall6.render(SCREEN)
-        wall7.render(SCREEN)
+        render_walls(walls, SCREEN)
         pygame.display.update()
         pygame.time.Clock().tick(20)
