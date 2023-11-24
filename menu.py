@@ -1,7 +1,7 @@
 import pygame
 import sys
 from config import colors, WIDTH, HEIGHT
-from main import f_level, s_level, two_players_1
+from main import f_level, s_level, two_players_1, two_players_2
 # Инициализация Pygame
 pygame.init()
 
@@ -18,21 +18,27 @@ def draw_menu():
     screen.fill(colors["WHITE"])
 
     # Рисование кнопок
-    pygame.draw.rect(screen, colors["RED"], (50, 50, 300, 50))
+    pygame.draw.rect(screen, colors["RED"], (50, 50, 300, 40))
+    pygame.draw.rect(screen, colors["RED"], (400, 50, 300, 50))
     pygame.draw.rect(screen, colors["RED"], (50, 150, 300, 50))
+    pygame.draw.rect(screen, colors["RED"], (400, 150, 300, 50))
     pygame.draw.rect(screen, colors["RED"], (50, 250, 300, 50))
-    pygame.draw.rect(screen, colors["RED"], (50, 350, 300, 50))
+    pygame.draw.rect(screen, colors["RED"], (400, 250, 300, 50))
 
     # Рисование текста на кнопках
     text_level1 = font.render("Level 1", True, colors["BLACK"])
     text_level2 = font.render("Level 2", True, colors["BLACK"])
     text_level3 = font.render("Level 3", True, colors["BLACK"])
+    text_one_player = font.render("One player", True, colors["BLACK"])
     text_level_two_players = font.render("Two players", True, colors["BLACK"])
 
+    screen.blit(text_one_player, (170 - text_one_player.get_width() // 2, 20))
     screen.blit(text_level1, (170 - text_level1.get_width() // 2, 65))
+    screen.blit(text_level1, (510, 65))
     screen.blit(text_level2, (170 - text_level2.get_width() // 2, 165))
+    screen.blit(text_level2, (510, 165))
     screen.blit(text_level3, (170 - text_level3.get_width() // 2, 265))
-    screen.blit(text_level_two_players, (170 - text_level_two_players.get_width() // 2, 365))
+    screen.blit(text_level3, (510, 265))
 
 
 def menu():
@@ -44,6 +50,7 @@ def menu():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # Обработка нажатий на кнопки
                 x, y = pygame.mouse.get_pos()
+                print(x, y)
                 if 50 < x < 350:
                     if 50 < y < 100:
                         f_level()
@@ -51,8 +58,14 @@ def menu():
                         s_level()
                     elif 250 < y < 300:
                         two_players_1()
-                    elif 350 < y < 400:
+                elif 400 < x < 700:
+                    if 50 < y < 100:
                         two_players_1()
+                    elif 150 < y < 200:
+                        two_players_2()
+                    elif 250 < y < 300:
+                        two_players_2()
+
 
         # Отрисовка меню
         draw_menu()
