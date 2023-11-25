@@ -23,7 +23,11 @@ class Wall:
                          random.randint(0, (HEIGHT // GRIDSIZE) - 1) * GRIDSIZE)
 
     def render(self, surface):
+        image = pygame.image.load('wall.webp')
+        rect = pygame.Rect(self.position[0], self.position[1], GRIDSIZE, GRIDSIZE)
+        scaled_image = pygame.transform.scale(image, (GRIDSIZE, GRIDSIZE))
         pygame.draw.rect(surface, self.color, pygame.Rect(self.position[0], self.position[1], GRIDSIZE, GRIDSIZE))
+        surface.blit(scaled_image, rect)
 
 
 class Snake:
@@ -175,10 +179,19 @@ def check_snake_position_with_walls(snake_1, walls, snake_2=None, ):
 # def check_snake_with_bad_food(snake, bad_food):
 #     if bad_food
 
+
+def spawn_food(food, walls):
+    while True:
+        food.randomize_position()
+        for wall in walls:
+            if food.position != wall.position:
+                break
+
+
 def check_snake_position_with_food(snake, food, walls=None):
     if snake.get_head_position() == food.position:
         snake.length += food.countPlusHp
-        food.randomize_position()
+        spawn_food(food, walls)
         random_number = random.randint(0,3)
         if 1 == random_number:
             food.countPlusHp = random.randint(2, 5)
@@ -187,10 +200,11 @@ def check_snake_position_with_food(snake, food, walls=None):
             food.countPlusHp = 1
             food.color = colors["RED"]
 
-
-
         if walls is not None:
+            spawn_food(food, walls)
             randomize_position_walls(walls)
+        else:
+            food.randomize_position()
 
 
 
