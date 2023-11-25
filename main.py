@@ -185,7 +185,9 @@ def spawn_food(food, walls):
         food.randomize_position()
         for wall in walls:
             if food.position != wall.position:
-                break
+                continue
+        else:
+            return
 
 
 def check_snake_position_with_food(snake, food, walls=None):
