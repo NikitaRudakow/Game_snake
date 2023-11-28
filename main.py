@@ -88,6 +88,8 @@ class Food:
     def render(self, surface, is_golden_apple=False):
         if self.countPlusHp > 1:
             image = pygame.image.load('gold_apple.png')
+        elif self.countPlusHp < 0:
+            image = pygame.image.load('poison.png')
         else:
             image = pygame.image.load('apple.png')
         rect = pygame.Rect(self.position[0], self.position[1], GRIDSIZE, GRIDSIZE)
@@ -105,15 +107,17 @@ def drawGrid(surface):
     for y in range(0, HEIGHT, GRIDSIZE):
         for x in range(0, WIDTH, GRIDSIZE):
             rect = pygame.Rect(x, y, GRIDSIZE, GRIDSIZE)
-            # pygame.draw.rect(surface, colors["BLACK"], rect, 1)
 
 
 def handle_events(snake_1, snake_2=None):
+    running = True
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
         elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                running = False
             if event.key == pygame.K_UP:
                 if snake_1.direction != DOWN:
                     snake_1.direction = UP
@@ -139,6 +143,7 @@ def handle_events(snake_1, snake_2=None):
                 elif event.key == pygame.K_d:
                     if snake_2.direction != LEFT:
                         snake_2.direction = RIGHT
+    return running
 
 
 def show_score(screen, snake_1, snake_2=None):
@@ -183,9 +188,12 @@ def check_snake_position_with_walls(snake_1, walls, snake_2=None, ):
 def spawn_food(food, walls):
     while True:
         food.randomize_position()
-        for wall in walls:
-            if food.position != wall.position:
-                continue
+        if walls is not None:
+            for wall in walls:
+                if food.position != wall.position:
+                    continue
+            else:
+                return
         else:
             return
 
@@ -196,7 +204,7 @@ def check_snake_position_with_food(snake, food, walls=None):
         spawn_food(food, walls)
         random_number = random.randint(0,3)
         if 1 == random_number:
-            food.countPlusHp = random.randint(2, 5)
+            food.countPlusHp = random.randint(-3, 5)
             food.color = colors["GOLD"]
         else:
             food.countPlusHp = 1
@@ -214,9 +222,10 @@ def two_players_1():
     snake_1 = Snake(colors["WHITE"])
     snake_2 = Snake(colors["PINK"])
     food = Food()
+    running = True
 
-    while True:
-        handle_events(snake_1, snake_2)
+    while running:
+        running = handle_events(snake_1, snake_2)
         snake_1.update(snake_2)
         snake_2.update(snake_1)
         check_snake_position_with_food(snake_1, food)
@@ -234,10 +243,12 @@ def two_players_2():
     snake_2 = Snake(colors["PINK"])
     food = Food()
     # bad_food =
-    walls = [Wall() for i in range(3)]
+    walls = [Wall() for i in range(6)]
 
-    while True:
-        handle_events(snake_1, snake_2)
+    running = True
+
+    while running:
+        running = handle_events(snake_1, snake_2)
         snake_1.update(snake_2)
         snake_2.update(snake_1)
         check_snake_position_with_food(snake_1, food, walls)
@@ -257,10 +268,11 @@ def two_players_3():
     snake_1 = Snake(colors["WHITE"])
     snake_2 = Snake(colors["PINK"])
     food = Food()
-    walls = [Wall() for i in range(7)]
+    walls = [Wall() for i in range(15)]
+    running = True
 
-    while True:
-        handle_events(snake_1, snake_2)
+    while running:
+        running = handle_events(snake_1, snake_2)
         snake_1.update(snake_2)
         snake_2.update(snake_1)
         check_snake_position_with_food(snake_1, food, walls)
@@ -279,8 +291,9 @@ def two_players_3():
 def f_level():
     snake = Snake(colors["GREEN"])
     food = Food()
-    while True:
-        handle_events(snake)
+    running = True
+    while running:
+        running = handle_events(snake)
         snake.update()
         check_snake_position_with_food(snake, food)
         show_score(screen=SCREEN, snake_1=snake)
@@ -293,10 +306,12 @@ def f_level():
 def s_level():
     snake = Snake(colors["GREEN"])
     food = Food()
-    walls = [Wall() for i in range(3)]
+    walls = [Wall() for i in range(6)]
 
-    while True:
-        handle_events(snake)
+    running = True
+
+    while running:
+        running = handle_events(snake)
         snake.update()
 
         check_snake_position_with_food(snake, food, walls)
@@ -312,10 +327,10 @@ def s_level():
 def t_level():
     snake = Snake(colors["GREEN"])
     food = Food()
-    walls = [Wall() for i in range(7)]
-
-    while True:
-        handle_events(snake)
+    walls = [Wall() for i in range(15)]
+    running = True
+    while running:
+        running = handle_events(snake)
         snake.update()
 
         check_snake_position_with_food(snake, food, walls)
@@ -327,3 +342,4 @@ def t_level():
         render_walls(walls, SCREEN)
         pygame.display.update()
         pygame.time.Clock().tick(20)
+
