@@ -11,6 +11,10 @@ background = pygame.image.load('background.jpg')
 SCREEN.blit(background, (0, 0))
 pygame.display.set_caption("Змейка")
 
+def save_to_txt(score, level):
+    file_name = "saves/save_level_" + str(level) + ".txt"
+    with open(file_name, "a+", encoding="utf-8") as file:
+        file.write(str(score) + "\n")
 
 class Wall:
     def __init__(self):
@@ -64,7 +68,8 @@ class Snake:
                 if len(self.positions) > self.length:
                     self.positions.pop()
 
-    def reset(self):
+    def reset(self, level):
+        save_to_txt(self.length, level)
         self.length = 1
         self.positions = [((WIDTH // 2), (HEIGHT // 2))]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
@@ -167,19 +172,19 @@ def randomize_position_walls(walls):
         wall.randomize_position()
 
 
-def check_snake_head_positions(snake_1, snake_2):
+def check_snake_head_positions(snake_1, snake_2, level):
     if snake_2.get_head_position() == snake_1.get_head_position():
-        snake_1.reset()
-        snake_2.reset()
+        snake_1.reset(level)
+        snake_2.reset(level)
 
 
-def check_snake_position_with_walls(snake_1, walls, snake_2=None):
+def check_snake_position_with_walls(snake_1, walls, level, snake_2=None):
     for wall in walls:
         if wall.position == snake_1.get_head_position():
-            snake_1.reset()
+            snake_1.reset(level)
         if snake_2 is not None:
             if wall.position == snake_2.get_head_position():
-                snake_2.reset()
+                snake_2.reset(level)
 
 # def check_snake_with_bad_food(snake, bad_food):
 #     if bad_food
@@ -242,11 +247,12 @@ def two_players_1():
         check_snake_position_with_food(snake_2, food, poison)
         check_and_spawn_poison(food, snake_1, poison)
         check_and_spawn_poison(food, snake_2, poison)
+        check_snake_head_positions(snake_1, snake_2, 1)
         show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
         if snake_1.length <= 0:
-            snake_1.reset()
+            snake_1.reset(1)
         if snake_2.length <= 0:
-            snake_2.reset()
+            snake_2.reset(1)
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
         food.render(SCREEN)
@@ -261,7 +267,7 @@ def two_players_2():
     food = Food()
     poison = Food()
     poison.countPlusHp = -1
-    walls = [Wall() for i in range(6)]
+    walls = [Wall() for i in range(5)]
 
     running = True
 
@@ -273,13 +279,13 @@ def two_players_2():
         check_snake_position_with_food(snake_2, food, poison, walls)
         check_and_spawn_poison(food, snake_1, poison, walls)
         check_and_spawn_poison(food, snake_2, poison, walls)
-        check_snake_head_positions(snake_1, snake_2)
-        check_snake_position_with_walls(snake_1=snake_1, snake_2=snake_2, walls=walls)
+        check_snake_head_positions(snake_1, snake_2, 2)
+        check_snake_position_with_walls(snake_1=snake_1, snake_2=snake_2, level=2, walls=walls)
         show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
         if snake_1.length <= 0:
-            snake_1.reset()
+            snake_1.reset(2)
         if snake_2.length <= 0:
-            snake_2.reset()
+            snake_2.reset(2)
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
         render_walls(walls=walls, screen=SCREEN)
@@ -295,7 +301,7 @@ def two_players_3():
     food = Food()
     poison = Food()
     poison.countPlusHp = -1
-    walls = [Wall() for i in range(15)]
+    walls = [Wall() for i in range(9)]
     running = True
 
     while running:
@@ -306,13 +312,13 @@ def two_players_3():
         check_snake_position_with_food(snake_2, food, poison, walls)
         check_and_spawn_poison(food, snake_1, poison, walls)
         check_and_spawn_poison(food, snake_2, poison, walls)
-        check_snake_head_positions(snake_1, snake_2)
-        check_snake_position_with_walls(snake_1=snake_1, snake_2=snake_2, walls=walls)
+        check_snake_head_positions(snake_1, snake_2, 3)
+        check_snake_position_with_walls(snake_1=snake_1, snake_2=snake_2, level=3, walls=walls)
         show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
         if snake_1.length <= 0:
-            snake_1.reset()
+            snake_1.reset(3)
         if snake_2.length <= 0:
-            snake_2.reset()
+            snake_2.reset(3)
         snake_1.render(SCREEN)
         snake_2.render(SCREEN)
         render_walls(walls, SCREEN)
@@ -335,7 +341,7 @@ def f_level():
         check_and_spawn_poison(food, snake, poison)
         show_score(screen=SCREEN, snake_1=snake)
         if snake.length <= 0:
-            snake.reset()
+            snake.reset(1)
         snake.render(SCREEN)
         food.render(SCREEN)
         poison.render(SCREEN)
@@ -348,7 +354,7 @@ def s_level():
     food = Food()
     poison = Food()
     poison.countPlusHp = -1
-    walls = [Wall() for i in range(6)]
+    walls = [Wall() for i in range(5)]
 
     running = True
 
@@ -358,10 +364,10 @@ def s_level():
 
         check_and_spawn_poison(food, snake, poison, walls)
         check_snake_position_with_food(snake, food, poison, walls)
-        check_snake_position_with_walls(snake_1=snake, walls=walls)
+        check_snake_position_with_walls(snake_1=snake, level=2, walls=walls)
         show_score(screen=SCREEN, snake_1=snake)
         if snake.length <= 0:
-            snake.reset()
+            snake.reset(2)
         snake.render(SCREEN)
         food.render(SCREEN)
         poison.render(SCREEN)
@@ -375,7 +381,7 @@ def t_level():
     food = Food()
     poison = Food()
     poison.countPlusHp = -1
-    walls = [Wall() for i in range(15)]
+    walls = [Wall() for i in range(9)]
     running = True
     while running:
         running = handle_events(snake)
@@ -383,10 +389,10 @@ def t_level():
 
         check_and_spawn_poison(food, snake, poison, walls)
         check_snake_position_with_food(snake, food, poison, walls)
-        check_snake_position_with_walls(snake_1=snake, walls=walls)
+        check_snake_position_with_walls(snake_1=snake, level=3, walls=walls)
         show_score(screen=SCREEN, snake_1=snake)
         if snake.length <= 0:
-            snake.reset()
+            snake.reset(3)
         snake.render(SCREEN)
         food.render(SCREEN)
         poison.render(SCREEN)
