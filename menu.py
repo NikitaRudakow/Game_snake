@@ -5,6 +5,8 @@ from main import f_level, s_level, two_players_1, two_players_2, t_level, two_pl
 # Инициализация Pygame
 pygame.init()
 
+background = pygame.image.load('background.png')
+background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
 # Создание экрана
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -15,7 +17,7 @@ font = pygame.font.Font(None, 36)
 
 
 def draw_menu():
-    screen.fill(colors["WHITE"])
+    screen.blit(background, (0, 0))
 
     # Рисование кнопок
     pygame.draw.rect(screen, colors["RED"], (50, 50, 300, 50))
@@ -30,6 +32,11 @@ def draw_menu():
     text_level1 = font.render("Level 1", True, colors["BLACK"])
     text_level2 = font.render("Level 2", True, colors["BLACK"])
     text_level3 = font.render("Level 3", True, colors["BLACK"])
+
+    font_for_number = pygame.font.Font(None, 50)
+    number_1 = font_for_number.render("1", True, colors["BLACK"])
+    number_2 = font_for_number.render("2", True, colors["BLACK"])
+    number_3 = font_for_number.render("3", True, colors["BLACK"])
     text_one_player = font.render("One player", True, colors["BLACK"])
     text_level_two_players = font.render("Two players", True, colors["BLACK"])
 
@@ -41,6 +48,9 @@ def draw_menu():
     screen.blit(text_level2, (510, 165))
     screen.blit(text_level3, (150, 265))
     screen.blit(text_level3, (510, 265))
+    screen.blit(number_1, (367, 345))
+    screen.blit(number_2, (367, 397))
+    screen.blit(number_3, (367, 449))
 
 
 def menu():
