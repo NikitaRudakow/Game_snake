@@ -72,7 +72,8 @@ class Snake:
                     self.positions.pop()
 
     def reset(self, level, two_players):
-        save_to_txt(self.length, level, two_players)
+        if self.length > 1:
+            save_to_txt(self.length, level, two_players)
         self.length = 1
         self.positions = [((WIDTH // 2), (HEIGHT // 2))]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
