@@ -175,12 +175,6 @@ def randomize_position_walls(walls):
         wall.randomize_position()
 
 
-def check_snake_head_positions(snake_1, snake_2, level):
-    if snake_2.get_head_position() == snake_1.get_head_position():
-        snake_1.reset(level, True)
-        snake_2.reset(level, True)
-
-
 def check_snake_position_with_walls(snake_1, walls, level, two_players=False, snake_2=None):
     for wall in walls:
         if wall.position == snake_1.get_head_position():
@@ -250,7 +244,6 @@ def two_players_1():
         check_snake_position_with_food(snake_2, food, poison)
         check_and_spawn_poison(food, snake_1, poison)
         check_and_spawn_poison(food, snake_2, poison)
-        check_snake_head_positions(snake_1, snake_2, 1)
         show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
         if snake_1.length <= 0:
             snake_1.reset(1, True)
@@ -282,7 +275,6 @@ def two_players_2():
         check_snake_position_with_food(snake_2, food, poison, walls)
         check_and_spawn_poison(food, snake_1, poison, walls)
         check_and_spawn_poison(food, snake_2, poison, walls)
-        check_snake_head_positions(snake_1, snake_2, 2)
         check_snake_position_with_walls(snake_1=snake_1, snake_2=snake_2, level=2, two_players=True, walls=walls)
         show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
         if snake_1.length <= 0:
@@ -315,7 +307,6 @@ def two_players_3():
         check_snake_position_with_food(snake_2, food, poison, walls)
         check_and_spawn_poison(food, snake_1, poison, walls)
         check_and_spawn_poison(food, snake_2, poison, walls)
-        check_snake_head_positions(snake_1, snake_2, 3)
         check_snake_position_with_walls(snake_1=snake_1, snake_2=snake_2, level=3, two_players=True, walls=walls)
         show_score(screen=SCREEN, snake_1=snake_1, snake_2=snake_2)
         if snake_1.length <= 0:
