@@ -14,7 +14,15 @@ pygame.display.set_caption("Пример меню с Pygame")
 
 # Определение шрифта
 font = pygame.font.Font(None, 36)
-
+def get_record(level, game_mode):
+    path = "saves/save_level_" + str(level) + "_" + str(game_mode) + "_player.txt"
+    data_int_list = [0]
+    try:
+        with open(path, "r") as file:
+            data_int_list = [int(x) for x in (file.read()).split()]
+    except FileNotFoundError:
+        return 0
+    return max(data_int_list)
 
 def draw_menu():
     screen.blit(background, (0, 0))
@@ -39,6 +47,12 @@ def draw_menu():
     number_3 = font_for_number.render("3", True, colors["BLACK"])
     text_one_player = font.render("One player", True, colors["BLACK"])
     text_level_two_players = font.render("Two players", True, colors["BLACK"])
+    record_for_1_1 = font.render(str(get_record(1,1)), True, colors["BLACK"])
+    record_for_2_1 = font.render(str(get_record(2, 1)), True, colors["BLACK"])
+    record_for_3_1 = font.render(str(get_record(3, 1)), True, colors["BLACK"])
+    record_for_1_2 = font.render(str(get_record(1, 2)), True, colors["BLACK"])
+    record_for_2_2 = font.render(str(get_record(2, 2)), True, colors["BLACK"])
+    record_for_3_2 = font.render(str(get_record(3, 2)), True, colors["BLACK"])
 
     screen.blit(text_one_player, (125, 20))
     screen.blit(text_level_two_players, (480, 20))
@@ -51,6 +65,12 @@ def draw_menu():
     screen.blit(number_1, (367, 345))
     screen.blit(number_2, (367, 397))
     screen.blit(number_3, (367, 449))
+    screen.blit(record_for_1_1, (55, 355))
+    screen.blit(record_for_2_1, (55, 405))
+    screen.blit(record_for_3_1, (55, 455))
+    screen.blit(record_for_1_2, (407, 355))
+    screen.blit(record_for_2_1, (407, 405))
+    screen.blit(record_for_3_1, (407, 455))
 
 
 def menu():
@@ -78,13 +98,9 @@ def menu():
                     elif 250 < y < 300:
                         two_players_3()
 
-
-        # Отрисовка меню
         draw_menu()
 
-        # Обновление экрана 
         pygame.display.flip()
-    # Основной цикл программы
 
 if __name__ == "__main__":
     menu()

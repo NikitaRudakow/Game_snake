@@ -13,7 +13,7 @@ pygame.display.set_caption("Змейка")
 
 def save_to_txt(score, level, two_players):
     if two_players:
-        file_name = "saves/save_level_" + str(level) + "_2_players.txt"
+        file_name = "saves/save_level_" + str(level) + "_2_player.txt"
     else:
         file_name = "saves/save_level_" + str(level) + "_1_player.txt"
     with open(file_name, "a+", encoding="utf-8") as file:
@@ -394,4 +394,6 @@ def t_level():
         render_walls(walls, SCREEN)
         pygame.display.update()
         pygame.time.Clock().tick(20)
+
+
 
