@@ -69,8 +69,8 @@ def draw_menu():
     screen.blit(record_for_2_1, (55, 405))
     screen.blit(record_for_3_1, (55, 455))
     screen.blit(record_for_1_2, (407, 355))
-    screen.blit(record_for_2_1, (407, 405))
-    screen.blit(record_for_3_1, (407, 455))
+    screen.blit(record_for_2_2, (407, 405))
+    screen.blit(record_for_3_2, (407, 455))
 
 
 def menu():
